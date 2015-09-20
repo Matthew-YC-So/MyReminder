@@ -1,0 +1,63 @@
+<ion-view view-title="Reminders">
+    <ion-side-menus>
+        <!-- Left menu -->
+        <ion-side-menu side="left">
+            <ion-content>
+                <ion-header-bar class="bar-dark">
+                    <h1 class="title">Groups</h1>
+                    <button class="button button-icon ion-plus" ng-click="newGroup()"></button>
+                </ion-header-bar>
+                <ion-list>
+                    <ion-item>
+                        &nbsp;
+                    </ion-item>
+                    <ion-item ng-repeat="group in groups" ng-class="{active:activeGroup == group}" ng-click="selectGroup(group, $index)"  menu-close>
+                        {{group.title}}
+                        <ion-option-button class="button-assertive icon-left ion-close-circled" ng-click="removeGroup(group)">
+                            Delete
+                        </ion-option-button>
+                    </ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-side-menu>
+
+        <ion-side-menu-content>
+            <!-- Main content, usually <ion-nav-view> -->
+            <ion-content>
+                <div class="bar bar-header">
+                    <button class="button icon ion-navicon" menu-toggle="left"></button>
+                    <h1 class="title">{{activeGroup.title}}</h1>
+                    <!-- New Reminder button-->
+                    <button class="button button-icon" ng-click="newReminder()">
+                        <i class="icon ion-compose"></i>
+                    </button>
+                    <!-- Delete Reminder button-->
+                    <button class="button button-icon" ng-click="removeSelectedReminders()">
+                        <i class="icon ion-close-round"></i>
+                    </button>
+                </div>
+                <ion-list>
+                    <ion-item>
+                        &nbsp;
+                    </ion-item>
+                    <ion-item class="item-icon-left item-checkbox">
+                        <label class="checkbox">
+                            <input type="checkbox" ng-model="allRemindersSelected" ng-change="selectAllReminders()">
+                        </label>
+                        <h2 class="title">Select all reminders</h2>
+                    </ion-item>
+                    <ion-item class="item-remove-animate" ng-repeat="reminder in activeGroup.reminders" type="item-text-wrap">
+                        <div class="row">
+                            <div class="col checkbox">
+                                <input type="checkbox" ng-model="reminder.selected">
+                            </div>
+                            <div class="col col-75">
+                                <i>{{reminder.date|date:'yyyy-MM-dd EEEE'}}</i>
+                                <p>{{reminder.content}}</p>
+                            </div>
+                        </div>
+                    </ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-side-menu-content>
+</ion-view>

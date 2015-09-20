@@ -1,0 +1,24 @@
+<div class="modal">
+    <!-- Modal header bar -->
+    <ion-header-bar class="bar-secondary">
+        <h1 class="title">Reminder</h1>
+        <button class="button button-clear button-positive" ng-click="closeNewReminder()">Cancel</button>
+    </ion-header-bar>
+
+    <!-- Modal content area -->
+    <ion-content class="padding">
+        <form ng-submit="updateReminder(reminder)">
+            <div class="list">
+                <label class="item item-input">
+                    <input type="date" placeholder="Event Date" ng-model="reminder.date">
+                </label>
+                <label class="item item-input">
+                    <textarea placeholder="Content" rows="5" ng-model="reminder.content"></textarea>
+                </label>
+            </div>
+            <div class="padding">
+                <button type="submit" class="button button-block button-positive">Update Reminder</button>
+            </div>
+        </form>
+    </ion-content>
+</div>
