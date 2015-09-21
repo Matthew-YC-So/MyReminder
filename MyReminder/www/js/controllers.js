@@ -138,6 +138,9 @@ angular.module('starter.controllers', [])
                 $scope.activeGroup.reminders.unshift(item);
             });
         }
+        else {
+            Groups.updateReminder(reminder);
+        }
         $scope.reminderModal.hide();
     };
 
@@ -152,4 +155,20 @@ angular.module('starter.controllers', [])
             item.selected = selected;
         });
     }
+
+    $ionicModal.fromTemplateUrl('templates/tab-reminders-select.html', function (modal) {
+        $scope.remindersSelectModal = modal;
+    },
+     {
+         scope: $scope,
+         animation: 'slide-in-up'
+     });
+
+    $scope.openSelectReminders = function () {
+        $scope.remindersSelectModal.show();
+    };
+
+    $scope.closeSelectReminders = function () {
+        $scope.remindersSelectModal.hide();
+    };
 });

@@ -111,6 +111,10 @@ angular.module('starter.services', ['starter.config'])
         });
     };
 
+    self.updateReminder = function (item) {
+        return DB.query('UPDATE reminders SET date = ?, content = ?, groupId = ? WHERE id = ?', [item.date, item.content, item.groupId, item.id]);
+    };
+
     self.deleteReminder = function (item) {
         return DB.query('DELETE FROM reminders WHERE id = ?', [item.id]);
     };
@@ -170,6 +174,9 @@ angular.module('starter.services', ['starter.config'])
             return DBGroups.deleteReminder(reminder);
         },
 
+        updateReminder: function (reminder) {
+            return DBGroups.updateReminder(reminder);
+        }
 
 
     }
