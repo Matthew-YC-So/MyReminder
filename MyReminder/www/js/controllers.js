@@ -8,7 +8,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('RemindersCtrl', function ($scope, Groups, $ionicSideMenuDelegate, $ionicModal) {
+.controller('RemindersCtrl', function ($scope, Groups, $ionicSideMenuDelegate, $ionicModal, $q) {
 
     $scope.allRemindersSelected = false;
 
@@ -85,15 +85,22 @@ angular.module('starter.controllers', [])
             };
         });
 
-        if (remindersSelected.length > 0 && confirm('Confirm to delete reminders ?')) {
+        if (remindersSelected.length > 0 && confirm('Confirm to delete ' + remindersSelected.length + ' reminder' + (remindersSelected.length > 1 ? 's' : '') + '?')) {
+            var proms = [];
             angular.forEach(remindersSelected, function (reminder) {
-                Groups.deleteReminder(reminder)
-                    .then(function () {
-                        var index = $scope.activeGroup.reminders.indexOf(reminder)
-                        if (index > -1) {
-                            $scope.activeGroup.reminders.splice(index, 1);
-                        }
-                    });
+                proms.push(
+                    Groups.deleteReminder(reminder)
+                        .then(function () {
+                            var index = $scope.activeGroup.reminders.indexOf(reminder)
+                            if (index > -1) {
+                                $scope.activeGroup.reminders.splice(index, 1);
+                            }
+                        }));
+            });
+
+            // Afte ALL items are removed!
+            $q.all(proms).then(function () {
+                $scope.remindersSelectModal.hide();
             });
         }
     };
@@ -155,6 +162,10 @@ angular.module('starter.controllers', [])
             item.selected = selected;
         });
     }
+
+    //$scope.reminderSelected = function (reminder) {
+    //    this.allRemindersSelected = false;
+    //};
 
     $ionicModal.fromTemplateUrl('templates/tab-reminders-select.html', function (modal) {
         $scope.remindersSelectModal = modal;
