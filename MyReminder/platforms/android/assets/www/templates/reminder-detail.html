@@ -2,7 +2,10 @@
     <!-- Modal header bar -->
     <ion-header-bar class="bar-secondary">
         <h1 class="title">Reminder</h1>
-        <button class="button button-clear button-positive" ng-click="closeNewReminder()">Cancel</button>
+        <div class="buttons">
+            <button class="button button-icon icon ion-android-image" ng-click="addImage()"></button>
+            <button class="button button-icon icon ion-ios-close-outline" ng-click="closeNewReminder()"></button>
+        </div>
     </ion-header-bar>
 
     <!-- Modal content area -->
@@ -12,9 +15,8 @@
                 <label class="item item-input">
                     <input type="date" placeholder="Event Date" ng-model="reminder.date">
                 </label>
-                <label class="item item-input">
-                    <textarea placeholder="Content" rows="5" ng-model="reminder.content"></textarea>
-                </label>
+                <label class="item item-input" for="content"></label>
+                <div id="content" placeholder="Content" ng-model="reminder.content" contenteditable="true"></div>
             </div>
             <div class="padding">
                 <button type="submit" class="button button-block button-positive">Update Reminder</button>

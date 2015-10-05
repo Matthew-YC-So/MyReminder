@@ -8,4 +8,14 @@
     background-color:azure;
  }
 
- 
+ .menu-item-divider {
+     border-left:solid 1px #999;
+     margin-left:1em;
+     padding-right:1em;
+ }
+
+ div#content {
+     width:100%;
+     height:30em;
+     border:solid 1px #000;
+ }

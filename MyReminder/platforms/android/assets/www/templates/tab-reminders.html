@@ -2,15 +2,12 @@
     <ion-side-menus>
         <!-- Left menu -->
         <ion-side-menu side="left">
+            <ion-header-bar class="bar-dark">
+                <h1 class="title">Groups</h1>
+                <button class="button button-icon ion-plus" ng-click="newGroup()"></button>
+            </ion-header-bar>
             <ion-content>
-                <ion-header-bar class="bar-dark">
-                    <h1 class="title">Groups</h1>
-                    <button class="button button-icon ion-plus" ng-click="newGroup()"></button>
-                </ion-header-bar>
                 <ion-list>
-                    <ion-item>
-                        &nbsp;
-                    </ion-item>
                     <ion-item ng-repeat="group in groups" ng-class="{active:activeGroup == group}" ng-click="selectGroup(group, $index)" menu-close>
                         {{group.title}}
                         <ion-option-button class="button-assertive icon-left ion-close-circled" ng-click="removeGroup(group)">
@@ -22,24 +19,29 @@
         </ion-side-menu>
 
         <ion-side-menu-content>
-            <!-- Main content, usually <ion-nav-view> -->
-            <ion-content>
-                <ion-list>
-                    <ion-item class="header item-button-right item-button-left">
-                        <button class="button button-icon icon ion-navicon" menu-toggle="left"></button>
-                        <div class="title">{{activeGroup.title}}</div>
-                        <div class="buttons">
-                            <!-- New Reminder button-->
-                            <button class="button button-icon icon ion-plus" ng-click="newReminder()"></button>
-                            <!-- Delete Reminder button-->
-                            <button class="button button-icon icon ion-android-more-vertical" ng-click="openSelectReminders()"></button>
-                        </div>
-                    </ion-item>
-                    <ion-item class="item-icon-right" ng-repeat="reminder in activeGroup.reminders" type="item-text-wrap">
-                        <div><pre>{{reminder.content}}</pre><i class="item-note">{{reminder.date|date:'yyyy-MM-dd EEEE'}}</i></div>
-                        <button class="button button-icon icon ion-edit" ng-click="editReminder(reminder)"></button>
-                    </ion-item>
-                </ion-list>
-            </ion-content>
-        </ion-side-menu-content>
+            <ion-header-bar class="bar-dark" align-title="center">
+                <div class="buttons">
+                    <button class="button button-icon icon ion-navicon" menu-toggle="left"></button>
+                </div>
+                <div class="title">{{activeGroup.title}}</div>
+                <div class="buttons">
+                    <!-- New Reminder button-->
+                    <button class="button button-icon icon ion-plus" ng-click="newReminder()"></button>
+                    <div class="menu-item-divider"></div>
+                    <!-- Delete Reminder button-->
+                    <button class="button button-icon icon ion-android-more-vertical" ng-click="openSelectReminders()"></button>
+                </div>
+            </ion-header-bar>
+                <ion-content>
+                    <ion-list>
+                        <!--<ion-item class="header item-button-right item-button-left">
+
+                        </ion-item>-->
+                        <ion-item class="item-icon-right" ng-repeat="reminder in activeGroup.reminders" type="item-text-wrap">
+                            <div><pre>{{reminder.content}}</pre><i class="item-note">{{reminder.date|date:'yyyy-MM-dd EEEE'}}</i></div>
+                            <button class="button button-icon icon ion-ios-compose-outline" ng-click="editReminder(reminder)"></button>
+                        </ion-item>
+                    </ion-list>
+                </ion-content>
+</ion-side-menu-content>
 </ion-view>

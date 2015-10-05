@@ -1,12 +1,12 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+//.controller('DashCtrl', function($scope) {})
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
-})
+//.controller('AccountCtrl', function($scope) {
+//  $scope.settings = {
+//    enableFriends: true
+//  };
+//})
 
 .controller('RemindersCtrl', function ($scope, Groups, $ionicSideMenuDelegate, $ionicModal, $q) {
 
@@ -182,4 +182,108 @@ angular.module('starter.controllers', [])
     $scope.closeSelectReminders = function () {
         $scope.remindersSelectModal.hide();
     };
+
+
+    // Add Images 
+    // 1
+    $scope.images = [];
+
+    $scope.addImage = function () {
+
+        //errorHandler = function (err) {
+        //    console.log(err);
+        //};
+
+        //onInitFs = function (fs) {
+        //    console.log('Opened file system: ' + fs.name);
+        //};
+
+        //window.requestFileSystem = window.requestFileSystem || window.webkitRequestFileSystem;
+        //window.requestFileSystem(window.PERSISTENT, 50 * 1024 * 1024 /*50MB*/, onInitFs, errorHandler);
+        //window.webkitStorageInfo.requestQuota(PERSISTENT, 1024 * 1024, function (grantedBytes) {
+        //    window.requestFileSystem(window.PERSISTENT, grantedBytes, onInitFs, errorHandler);
+        //}, function (e) {
+        //    console.log('Error', e);
+        //});
+
+        var popover = new CameraPopoverOptions(300, 300, 100, 100, Camera.PopoverArrowDirection.ARROW_ANY);
+        // 2
+        var options = {
+            destinationType: Camera.DestinationType.FILE_URI,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY, // Camera.PictureSourceType.PHOTOLIBRARY  or Camera.PictureSourceType.CAMERA
+            allowEdit: false,
+            encodingType: Camera.EncodingType.JPEG
+            // popoverOptions: CameraPopoverOptions,
+            // popoverOptions : popover
+        };
+
+        // 3
+        
+        // $cordovaCamera.getPicture(options).then(function (imageData) {
+        navigator.camera.getPicture(
+            function (imageURI) {
+
+            // 4
+                onImageSuccess(imageURI);
+
+            function onImageSuccess(fileURI) {
+                createFileEntry(fileURI);
+            }
+
+            function createFileEntry(fileURI) {
+                window.resolveLocalFileSystemURL(fileURI, copyFile, fail);
+            }
+
+            // 5
+            function copyFile(fileEntry) {
+                var name = fileEntry.fullPath.substr(fileEntry.fullPath.lastIndexOf('/') + 1);
+                var newName = makeid() + name;
+                // window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (fileSystem2) { 
+                window.resolveLocalFileSystemURL(cordova.file.externalDataDirectory, function (fileSystem2) {
+                    fileEntry.copyTo(
+                    fileSystem2,
+                    newName,
+                    onCopySuccess,
+                    fail
+                    ); 
+
+                    console.log("got main dir", fileSystem2);
+                    fileSystem2.getFile("log.txt", { create: true }, function (file) {
+                        console.log("got the file", file);
+                        logOb = file;
+                        writeLog("App started");
+                    });
+
+                },
+                fail);
+            }
+
+            // 6
+            function onCopySuccess(entry) {
+                $scope.$apply(function () {
+                    $scope.images.push(entry.nativeURL);
+                    $scope.reminder.content += '<img src="' +  entry.nativeURL + '" />';
+                });
+            }
+
+            function fail(error) {
+                console.log("fail: " + error.code);
+            }
+
+            function makeid() {
+                var text = "";
+                var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+                for (var i = 0; i < 5; i++) {
+                    text += possible.charAt(Math.floor(Math.random() * possible.length));
+                }
+                return text;
+            }
+
+        }, function (err) {
+            console.log(err);
+        }, options);
+    }
+
+
 });
