@@ -16,7 +16,7 @@
                     <input type="date" placeholder="Event Date" ng-model="reminder.date">
                 </label>
                 <label class="item item-input" for="content"></label>
-                <div id="content" placeholder="Content" ng-model="reminder.content" contenteditable="true"></div>
+                <div id="content" placeholder="Content" ng-bind-html="reminder.content" contenteditable="true"></div>
             </div>
             <div class="padding">
                 <button type="submit" class="button button-block button-positive">Update Reminder</button>

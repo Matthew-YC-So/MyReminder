@@ -18,4 +18,9 @@
      width:100%;
      height:30em;
      border:solid 1px #000;
+     overflow:auto;
+ }
+
+ #content img {
+     height:10em;
  }
